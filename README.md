@@ -20,59 +20,55 @@ Inter-Code is a real-time code collaboration application designed for coding int
 ## Installation
 
 1. **Clone the repository:**
+
    ```bash
    git clone https://github.com/Shivam-Gupta-Github/Inter-Code.git
    cd inter-code
 
    ```
-   
+
 2. **Install dependencies:**
-    
-    For the server:
-    
-    ```bash
-    bashCopy code
-    cd server
-    npm install
-    
-    ```
-    
-    For the client:
-    
-    ```bash
-    bashCopy code
-    cd ../client
-    npm install
-    
-    ```
-    
+
+   For the server:
+
+   ```bash
+   cd server
+   npm install
+
+   ```
+
+   For the client:
+
+   ```bash
+   cd ../client
+   npm install
+
+   ```
+
 3. **Create Environment Files:**
-    - Add a `.env` file inside the `server` directory for server configuration.
-    - Add a `.env` file inside the `client` directory for client-specific variables.
+   - Add a `.env` file inside the `server` directory for server configuration.
+   - Add a `.env` file inside the `client` directory for client-specific variables.
 4. **Run the application:**
-    
-    To start the server:
-    
-    ```bash
-    bashCopy code
-    cd server
-    npm start
-    
-    ```
-    
-    To start the client:
-    
-    ```bash
-    bashCopy code
-    cd ../client
-    npm start
-    
-    ```
-    
+
+   To start the server:
+
+   ```bash
+   cd server
+   npm start
+
+   ```
+
+   To start the client:
+
+   ```bash
+   cd ../client
+   npm start
+
+   ```
+
 5. **Access the application:**
-    
-    Open your browser and go to `http://localhost:3000`.
-    
+
+   Open your browser and go to `http://localhost:3000`.
 
 ## Usage
 
