@@ -1,3 +1,11 @@
+:root {
+  --dark-background: #222629;
+  --btn: #03dac6;
+  --btn-hover: #6b6e70;
+  --transparent: #00000000;
+  --wrapper: #474b4f;
+}
+
 .homepage-wrapper {
   display: flex;
   align-items: center;
@@ -7,7 +15,7 @@
 }
 
 .form-wrapper {
-  background: #282a36;
+  background: var(--wrapper);
   padding: 20px;
   border-radius: 10px;
   width: 400px;
@@ -20,7 +28,7 @@ footer {
 }
 
 footer a {
-  color: #4aee88;
+  color: var(--btn);
 }
 
 .input-wrapper {
@@ -62,14 +70,16 @@ footer a {
 
 .join-btn,
 .leave-btn {
-  background: #4aed88;
+  background: var(--btn);
   width: 100px;
   margin-left: auto;
 }
 
 .join-btn:hover,
 .leave-btn:hover {
-  background: #2b824c;
+  background: var(--transparent);
+  border-inline: 3px solid var(--btn);
+  color: var(--btn);
 }
 
 .create-info {
@@ -77,17 +87,18 @@ footer a {
   margin-top: 20px;
 }
 
-.create-new-btn {
-  color: #4aed88;
+.linkedin {
+  color: var(--btn);
   text-decoration: none;
-  border-bottom: 1px solid #4aed88;
+  border-bottom: 1px solid var(--btn);
   transition: all 0.3s ease-in-out;
 }
 
-.create-new-btn:hover,
+.linkedin:hover,
+.new-room:hover,
 footer a:hover {
-  color: #368654;
-  border-color: #368654;
+  color: var(--btn-hover);
+  border-color: var(--btn-hover);
 }
 
 .main-wrapper {
@@ -96,7 +107,7 @@ footer a:hover {
 }
 
 .aside {
-  background: #1c1e29;
+  background: var(--dark-background);
   padding: 16px;
   color: #fff;
   display: flex;
@@ -115,18 +126,25 @@ footer a:hover {
 }
 
 .client {
+  width: 100%;
+  background-color: var(--wrapper);
+  border-radius: 10px;
+  padding: 10px;
   display: flex;
-  align-items: center;
-  flex-direction: column;
+  /* align-items: center; */
+  /* flex-direction: column; */
   font-weight: bold;
 }
 
 .username {
+  margin-left: 10px;
   margin-top: 10px;
+  font-weight: 500;
+  text-transform: capitalize;
 }
 
 .logo {
-  border-bottom: 1px solid #424242;
+  border-bottom: 1px solid var(--btn-hover);
   padding-bottom: 10px;
 }
 
@@ -144,4 +162,8 @@ footer a:hover {
   font-size: 20px;
   line-height: 1.6;
   padding-top: 20px;
+}
+
+.new-room {
+  color: var(--btn);
 }
