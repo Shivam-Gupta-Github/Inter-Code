@@ -2,6 +2,9 @@
 
 Inter-Code is a real-time code collaboration application designed for coding interviews and mock interview practice. Built using Node.js, React.js, and Socket.io, it allows users to create or join coding rooms and collaborate live using a synchronized code editor, making it an excellent tool for interview preparation.
 
+![Screenshot 2024-10-12 111838](https://github.com/user-attachments/assets/c095b262-08c3-4d5b-9596-0a60f0cd9f21)
+
+
 ## Features
 
 - **Real-time Collaboration:** Users can work on the same code with synchronized updates, ideal for mock coding interviews.
