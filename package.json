@@ -1,0 +1,11 @@
+{
+  "name": "inter-code",
+  "version": "1.0.0",
+  "description": "Inter-Code is a real-time code collaboration application designed for coding interviews and mock interview practice. Built using Node.js, React.js, and Socket.io, it allows users to create or join coding rooms and collaborate live using a synchronized code editor, making it an excellent tool for interview preparation.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Shivam gupta",
+  "license": "ISC"
+}
