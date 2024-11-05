@@ -14,13 +14,15 @@ const io = new Server(server);
 
 const userSocketMap = {};
 
-// Serve static files from the React app (client/build folder)
-app.use(express.static(path.join(__dirname, "../client/build")));
+if (process.env.NODE_ENV === "production") {
+  // Serve static files from the React app (client/build folder)
+  app.use(express.static(path.join(__dirname, "../client/build")));
 
-// Endpoint to serve the frontend application
-app.get("*", (req, res) => {
-  res.sendFile(path.resolve(__dirname, "../client", "build", "index.html"));
-});
+  // Endpoint to serve the frontend application
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "../client", "build", "index.html"));
+  });
+}
 
 function getAllConnectedClients(roomId) {
   return Array.from(io.sockets.adapter.rooms.get(roomId) || []).map(

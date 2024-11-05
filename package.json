@@ -8,7 +8,8 @@
     "build": "npm run install-all && npm run build-client",
     "build-client": "npm run build --prefix client",
     "start": "npm run start-server",
-    "start-server": "node server/server.js"
+    "start-server": "node server/server.js",
+    "dev": "concurrently \"npm start --prefix client\" \"npm run start-server\""
   },
   "author": "Shivam Gupta",
   "license": "ISC",
