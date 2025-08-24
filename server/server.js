@@ -2,7 +2,6 @@ const express = require("express");
 const http = require("http");
 const { Server } = require("socket.io");
 const dotenv = require("dotenv");
-const path = require("path");
 
 // Load environment variables from .env file
 dotenv.config();
@@ -10,19 +9,19 @@ dotenv.config();
 const PORT = process.env.PORT || 5000;
 const app = express();
 const server = http.createServer(app);
-const io = new Server(server);
+const io = new Server(server, {
+  cors: {
+    origin: "*", // in production, replace with your Vercel frontend URL
+    methods: ["GET", "POST"],
+  },
+});
 
 const userSocketMap = {};
 
-if (process.env.NODE_ENV === "production") {
-  // Serve static files from the React app (client/build folder)
-  app.use(express.static(path.join(__dirname, "../client/build")));
-
-  // Endpoint to serve the frontend application
-  app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "../client", "build", "index.html"));
-  });
-}
+// Health check route
+app.get("/", (req, res) => {
+  res.status(200).send("Server is up and running!");
+});
 
 function getAllConnectedClients(roomId) {
   return Array.from(io.sockets.adapter.rooms.get(roomId) || []).map(
@@ -34,7 +33,7 @@ function getAllConnectedClients(roomId) {
 }
 
 io.on("connection", (socket) => {
-  //   console.log("Socket connected: ", socket.id);
+  // console.log("Socket connected: ", socket.id);
 
   socket.on("join", ({ roomId, username }) => {
     userSocketMap[socket.id] = username;
