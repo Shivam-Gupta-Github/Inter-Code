@@ -8,20 +8,21 @@ dotenv.config();
 
 const PORT = process.env.PORT || 5000;
 const app = express();
-const server = http.createServer(app);
-const io = new Server(server, {
-  cors: {
-    origin: "*", // in production, replace with your Vercel frontend URL
-    methods: ["GET", "POST"],
-  },
-});
-
-const userSocketMap = {};
 
 // Health check route
 app.get("/", (req, res) => {
   res.status(200).send("Server is up and running!");
 });
+
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: ["http://localhost:3000", "https://intercode.shivamdev.me"],
+    methods: ["GET", "POST"],
+  },
+});
+
+const userSocketMap = {};
 
 function getAllConnectedClients(roomId) {
   return Array.from(io.sockets.adapter.rooms.get(roomId) || []).map(
