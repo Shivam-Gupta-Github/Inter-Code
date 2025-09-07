@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import Client from "./Client";
 import Editor from "./Editor";
 import { initSocket } from "../socket";
