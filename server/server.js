@@ -49,8 +49,8 @@ io.on("connection", (socket) => {
     });
   });
 
-  socket.on("code-change", ({ roomId, code }) => {
-    socket.in(roomId).emit("code-change", { code });
+  socket.on("code-change", ({ roomId, changes }) => {
+    socket.in(roomId).emit("code-change", { changes });
   });
 
   socket.on("sync-code", ({ code, socketId }) => {
