@@ -1,18 +1,29 @@
-const express = require("express");
-const http = require("http");
-const { Server } = require("socket.io");
-const dotenv = require("dotenv");
+import express from "express";
+import http from "http";
+import { Server } from "socket.io";
+import dotenv from "dotenv";
+import roomRoutes from "./routes/roomRoutes.js";
+import connectDB from "./config/db.js";
+import cors from "cors";
+
+// Connect to MongoDB
+connectDB();
 
 // Load environment variables from .env file
 dotenv.config();
 
 const PORT = process.env.PORT || 5000;
 const app = express();
+app.use(express.json());
+app.use(cors());
 
 // Health check route
 app.get("/", (req, res) => {
   res.status(200).send("Server is up and running!");
 });
+
+// Routes
+app.use("/api/rooms", roomRoutes);
 
 const server = http.createServer(app);
 const io = new Server(server, {

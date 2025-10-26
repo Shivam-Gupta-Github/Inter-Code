@@ -170,3 +170,8 @@ footer a:hover {
 .new-room {
   color: var(--btn);
 }
+
+.link {
+  text-decoration: none;
+  color: var(--btn);
+}
