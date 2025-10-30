@@ -160,12 +160,10 @@ function Editor({ roomId, socketRef, codeRef }) {
           <span className="editor-title">C++ Editor</span>
           <div style={{ display: "flex", gap: "10px" }}>
             <button
-              // className="reset-button"
+              className="p-2 rounded-lg text-white transition-colors hover:bg-white/10 cursor-pointer"
               onClick={() => socketRef.current.emit("reset-code", { roomId })}
             >
-              <RotateCcw
-                onClick={() => socketRef.current.emit("reset-code", { roomId })}
-              />
+              <RotateCcw size={20} />
             </button>
             <button
               className="run-button"

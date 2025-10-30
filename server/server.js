@@ -119,9 +119,32 @@ io.on("connection", (socket) => {
     }, DEBOUNCE_DELAY);
   });
 
+  // Handle reset code request
+  socket.on("reset-code", async ({ roomId }) => {
+    roomCodeMap[roomId] = DEFAULT_CPP_CODE;
+
+    // Broadcast reset to all clients in the room
+    io.to(roomId).emit("code-update", { code: DEFAULT_CPP_CODE });
+
+    // Save reset version in DB
+    if (saveTimeouts[roomId]) clearTimeout(saveTimeouts[roomId]);
+    try {
+      await Room.findOneAndUpdate(
+        { roomId },
+        { code: DEFAULT_CPP_CODE },
+        { upsert: true }
+      );
+      console.log(`Code for room ${roomId} reset to default`);
+    } catch (err) {
+      console.error(`Failed to reset code for room ${roomId}:`, err);
+    }
+  });
+
   socket.on("disconnecting", () => {
     const rooms = Array.from(socket.rooms);
     rooms.forEach((roomId) => {
+      if (roomId === socket.id) return; // Skip personal room
+
       socket.in(roomId).emit("disconnected", {
         socketId: socket.id,
         username: userSocketMap[socket.id],

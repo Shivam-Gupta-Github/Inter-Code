@@ -56,6 +56,7 @@ footer a {
   background: #eee;
   font-size: 16px;
   font-weight: bold;
+  color: var(--dark-background);
 }
 
 .btn {
@@ -71,8 +72,9 @@ footer a {
 .join-btn,
 .leave-btn {
   background: var(--btn);
-  width: 100px;
+  width: 125px;
   margin-left: auto;
+  color: var(--dark-background);
 }
 
 .join-btn:hover,
