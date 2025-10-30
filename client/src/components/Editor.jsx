@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { EditorView, keymap } from "@codemirror/view";
 import { EditorState, Annotation } from "@codemirror/state";
 import {
@@ -7,20 +7,27 @@ import {
   historyKeymap,
   indentWithTab,
 } from "@codemirror/commands";
-import { javascript } from "@codemirror/lang-javascript";
+import { cpp } from "@codemirror/lang-cpp";
 import { dracula } from "@uiw/codemirror-theme-dracula";
 import { closeBrackets, closeBracketsKeymap } from "@codemirror/autocomplete";
+import "./CodeEditor.css";
+import { RotateCcw } from "lucide-react";
+
+const PISTON_API = "https://emkc.org/api/v2/piston";
 
 const remoteChange = Annotation.define();
 
-function Editor({ roomId, socketRef, onCodeChange }) {
+function Editor({ roomId, socketRef, codeRef }) {
   const editorRef = useRef(null);
+  const [input, setInput] = useState("");
+  const [output, setOutput] = useState("");
+  const [isRunning, setIsRunning] = useState(false);
 
   useEffect(() => {
     const state = EditorState.create({
       doc: "",
       extensions: [
-        javascript(),
+        cpp(),
         dracula,
         closeBrackets(),
         history(),
@@ -43,8 +50,12 @@ function Editor({ roomId, socketRef, onCodeChange }) {
                 insert: inserted.toString(),
               });
             });
-            onCodeChange(update.state.doc.toString());
-            socketRef.current.emit("code-change", { roomId, changes });
+            codeRef.current = update.state.doc.toString();
+            socketRef.current.emit("code-change", {
+              roomId,
+              changes,
+              code: codeRef.current,
+            });
           }
         }),
         EditorView.lineWrapping,
@@ -65,6 +76,9 @@ function Editor({ roomId, socketRef, onCodeChange }) {
 
   useEffect(() => {
     if (!socketRef.current) return;
+
+    // Request initial code from server when joining
+    socketRef.current.emit("request-code", { roomId });
 
     // The handler now receives a payload that can have EITHER 'changes' OR 'code'
     const handler = (payload) => {
@@ -88,26 +102,113 @@ function Editor({ roomId, socketRef, onCodeChange }) {
           });
         }
       }
+      codeRef.current = editorRef.current.state.doc.toString();
     };
 
-    socketRef.current.on("code-change", handler);
+    socketRef.current.on("code-update", handler);
     return () => {
       if (socketRef.current) {
-        socketRef.current.off("code-change", handler);
+        socketRef.current.off("code-update", handler);
       }
     };
   }, [socketRef.current]);
 
+  const runCode = async () => {
+    setIsRunning(true);
+    setOutput("Running...");
+    const code = codeRef.current;
+    try {
+      const response = await fetch(`${PISTON_API}/execute`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          language: "c++",
+          version: "10.2.0",
+          files: [
+            {
+              name: "main.cpp",
+              content: code,
+            },
+          ],
+          stdin: input,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.run) {
+        const output = data.run.output || "";
+        const stderr = data.run.stderr || "";
+        const combinedOutput = stderr ? `${output}\n${stderr}` : output;
+        setOutput(combinedOutput || "No output");
+      } else {
+        setOutput("Error: Unable to execute code");
+      }
+    } catch (error) {
+      setOutput(`Error: ${error.message}`);
+    } finally {
+      setIsRunning(false);
+    }
+  };
+
   return (
-    <div
-      ref={editorRef}
-      style={{
-        height: "100%",
-        width: "100%",
-        fontSize: "18px",
-        fontFamily: "monospace",
-      }}
-    />
+    <div className="code-editor-container">
+      <div className="editor-section">
+        <div className="editor-header">
+          <span className="editor-title">C++ Editor</span>
+          <div style={{ display: "flex", gap: "10px" }}>
+            <button
+              // className="reset-button"
+              onClick={() => socketRef.current.emit("reset-code", { roomId })}
+            >
+              <RotateCcw
+                onClick={() => socketRef.current.emit("reset-code", { roomId })}
+              />
+            </button>
+            <button
+              className="run-button"
+              onClick={runCode}
+              disabled={isRunning}
+            >
+              {isRunning ? "Running..." : "Run Code"}
+            </button>
+          </div>
+        </div>
+
+        <div className="editor-content">
+          <div
+            ref={editorRef}
+            style={{
+              height: "100%",
+              width: "100%",
+              fontSize: "18px",
+              fontFamily: "monospace",
+            }}
+          />
+        </div>
+      </div>
+
+      <div className="io-section">
+        <div className="input-panel">
+          <div className="panel-header">Input</div>
+          <textarea
+            className="input-textarea"
+            placeholder="Enter input here..."
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+          />
+        </div>
+
+        <div className="output-panel">
+          <div className="panel-header">Output</div>
+          <pre className="output-pre">
+            {output || "Output will appear here..."}
+          </pre>
+        </div>
+      </div>
+    </div>
   );
 }
 

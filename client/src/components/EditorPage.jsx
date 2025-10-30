@@ -37,17 +37,14 @@ function EditorPage() {
       });
 
       socketRef.current.on("joined", ({ clients, username, socketId }) => {
-        // This condition is only true for clients ALREADY in the room
         if (username !== location.state.username) {
           toast.success(`${username} joined the room`);
-
-          // MOVED: Only existing clients should send the code to the new user.
-          socketRef.current.emit("sync-code", {
-            code: codeRef.current,
-            socketId,
-          });
         }
         setClients(clients);
+        socketRef.current.emit("sync-code", {
+          code: codeRef.current,
+          socketId,
+        });
       });
 
       socketRef.current.on("disconnected", ({ socketId, username }) => {

@@ -1,0 +1,167 @@
+.code-editor-container {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  background-color: #1e1e1e;
+  gap: 10px;
+  padding: 10px;
+}
+
+.editor-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: #252526;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #3e3e42;
+}
+
+.editor-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background-color: #2d2d30;
+  border-bottom: 1px solid #3e3e42;
+}
+
+.editor-title {
+  color: #cccccc;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.run-button {
+  background-color: #0e639c;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 13px;
+  transition: background-color 0.2s;
+}
+
+.run-button:hover:not(:disabled) {
+  background-color: #1177bb;
+}
+
+.run-button:disabled {
+  background-color: #094771;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.editor-content {
+  flex: 1;
+  overflow: auto;
+}
+
+.editor-content .cm-editor {
+  height: 100%;
+}
+
+.editor-content .cm-scroller {
+  font-family: "Consolas", "Monaco", "Courier New", monospace;
+  font-size: 14px;
+}
+
+.io-section {
+  width: 350px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.input-panel,
+.output-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: #252526;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #3e3e42;
+}
+
+.panel-header {
+  padding: 12px 16px;
+  background-color: #2d2d30;
+  color: #cccccc;
+  font-weight: 600;
+  font-size: 14px;
+  border-bottom: 1px solid #3e3e42;
+}
+
+.input-textarea {
+  flex: 1;
+  padding: 12px;
+  background-color: #1e1e1e;
+  color: #d4d4d4;
+  border: none;
+  outline: none;
+  font-family: "Consolas", "Monaco", "Courier New", monospace;
+  font-size: 13px;
+  resize: none;
+  line-height: 1.5;
+}
+
+.input-textarea::placeholder {
+  color: #6a6a6a;
+}
+
+.output-pre {
+  flex: 1;
+  padding: 12px;
+  margin: 0;
+  background-color: #1e1e1e;
+  color: #d4d4d4;
+  font-family: "Consolas", "Monaco", "Courier New", monospace;
+  font-size: 13px;
+  overflow: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  line-height: 1.5;
+}
+
+/* Scrollbar styling */
+.input-textarea::-webkit-scrollbar,
+.output-pre::-webkit-scrollbar {
+  width: 10px;
+}
+
+.input-textarea::-webkit-scrollbar-track,
+.output-pre::-webkit-scrollbar-track {
+  background: #1e1e1e;
+}
+
+.input-textarea::-webkit-scrollbar-thumb,
+.output-pre::-webkit-scrollbar-thumb {
+  background: #424242;
+  border-radius: 5px;
+}
+
+.input-textarea::-webkit-scrollbar-thumb:hover,
+.output-pre::-webkit-scrollbar-thumb:hover {
+  background: #4e4e4e;
+}
+
+/* Responsive design */
+@media (max-width: 1024px) {
+  .code-editor-container {
+    flex-direction: column;
+  }
+
+  .io-section {
+    width: 100%;
+    flex-direction: row;
+    height: 300px;
+  }
+
+  .input-panel,
+  .output-panel {
+    flex: 1;
+  }
+}
