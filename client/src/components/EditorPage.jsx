@@ -37,15 +37,8 @@ function EditorPage() {
       });
 
       socketRef.current.on("joined", ({ clients, username, socketId }) => {
-        // This condition is only true for clients ALREADY in the room
         if (username !== location.state.username) {
           toast.success(`${username} joined the room`);
-
-          // MOVED: Only existing clients should send the code to the new user.
-          socketRef.current.emit("sync-code", {
-            code: codeRef.current,
-            socketId,
-          });
         }
         setClients(clients);
       });
@@ -92,17 +85,20 @@ function EditorPage() {
           <div className="logo">
             <img className="logo-image" src="/logo.png" alt="inter-code-logo" />
           </div>
-          <h3>Connected</h3>
+          <h3 className="my-4">Connected</h3>
           <div className="clients-list">
             {clients.map((client) => (
               <Client key={client.socketId} username={client.username} />
             ))}
           </div>
         </div>
-        <button className="btn copy-btn" onClick={copyRoomId}>
+        <button
+          className="btn copy-btn bg-white text-black"
+          onClick={copyRoomId}
+        >
           Copy ROOM ID
         </button>
-        <button className="btn leave-btn" onClick={leaveRoom}>
+        <button className="btn leave-btn text-black" onClick={leaveRoom}>
           Leave
         </button>
       </div>
@@ -110,7 +106,7 @@ function EditorPage() {
         <Editor
           roomId={params.roomId}
           socketRef={socketRef}
-          onCodeChange={(code) => (codeRef.current = code)}
+          codeRef={codeRef}
         />
       </div>
     </div>
